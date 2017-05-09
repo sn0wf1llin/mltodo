@@ -218,7 +218,7 @@ class Sturmer:
         return all_params
 
     def build_model(self, train_file):
-        train_df, test_df = _splitter(train_file)
+        train_df, test_df = _splitter(train_file, dtype='unicode')
         sz = train_df.shape[1]
 
         train_X = train_df[:, 0:sz - 1]
@@ -238,10 +238,10 @@ class Sturmer:
         mcl_model = xgboost.train(multi_class_classifier_parameters, xg_train, num_round, watchlist)
         self.multi_class_classifier_model = mcl_model
 
-        # pred = mcl_model.predict(xg_test)
-        #
-        # print('predicting, classification error=%f' % (
-        #     sum(int(pred[i]) != test_Y[i] for i in range(len(test_Y))) / float(len(test_Y))))
+        pred = mcl_model.predict(xg_test)
+
+        print('predicting, classification error=%f' % (
+            sum(int(pred[i]) != test_Y[i] for i in range(len(test_Y))) / float(len(test_Y))))
 
     def _load_model(self):
         pass
